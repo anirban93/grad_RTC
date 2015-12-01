@@ -1,0 +1,33 @@
+{
+  "name": "grad_RTC",
+  "version": "0.0.1",
+  "description": "A simple WebRTC application that uses EasyRTC library in backend which helped to compare my network metrics with non-WebRTC applications.",
+  "main": "hello_world.js",
+  "scripts": {
+    "test": "node hello_world.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "gihub.com/anirban93/grad_RTC"
+  },
+  "dependencies": {
+    "body-parser": "",
+    "client-sessions": "",
+	"cookie-parser": "",
+	"easyrtc": "",
+	"express": "",
+	"express-session": "",
+	"mysql": "",
+	"node-uuid": "",
+	"pem": "",
+	"pwd": "",
+	"socket.io": ""
+  },
+  "keywords": [
+    "dependency",
+    "WebRTC",
+    "modules"
+  ],
+  "author": "Anirban Dutta",
+  "license": "BSD-2-Clause"
+}

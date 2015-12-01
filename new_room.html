@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>App</title>
+	<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="css/ie-emulation-modes-warning.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/jquery.mobile-1.4.5.min.js"></script>
+
+			<script src="js/jquery.cookie.js"></script>
+	<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
+		<!-- <link rel="stylesheet" href="js/bootstrap/css/bootstrap-theme.min.css"> -->
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="js/bootstrap/js/bootstrap.min.js"></script>
+
+
+
+	<!-- jQuery library -->
+	<!-- <script src="js/prettify/jquery.min.js"></script> -->
+
+	<!-- Latest compiled JavaScript -->
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--script type="text/javascript" src="login.js"></script-->
+	<!-- Easyrtc script -->
+	<link rel="stylesheet" type="text/css" href="/node_modules/easyrtc/api/easyrtc.css" />
+
+<!--hide-->
+<link rel="stylesheet" type="text/css" href="css/landing.css" />
+
+<!-- Prettify Code -->
+<script type="text/javascript" src="js/prettify/prettify.js"></script>
+<script type="text/javascript" src="js/prettify/loadAndFilter.js"></script>
+<link rel="stylesheet" type="text/css" href="js/prettify/prettify.css" />
+
+<!--show-->
+<!-- Assumes global locations for socket.io.js and easyrtc.js -->
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/node_modules/easyrtc/api/easyrtc.js"></script>
+<script type="text/javascript" src="/node_modules/easyrtc/api/easyrtc_ft.js"></script>
+<script type="text/javascript" src="js/demo_data_channel_filesharing.js"></script>
+
+<style type="text/css">
+		
+		.peerblock {
+                width: 800px;
+                border-radius:2px;
+                border:1px solid gray;
+            }
+
+            .receiveBlock {
+                width: 500px;
+                margin:10px;
+                display: inline-block;
+            }
+            .dragndrop {
+                display: inline-block;
+                padding:2em;
+                margin: 2px;
+                border:2px solid black;
+                border-radius: 5px;
+            }
+            .dragndropStatus {
+                display: inline-block;
+            }
+            .connecting {
+                background-color: yellow;
+            }
+            .usesSockets {
+                background-color: pink;
+            }
+            .notConnected {
+                visibility:hidden;
+            }
+            .connected {
+                background-color: #e0ffe0;
+            }
+            .notConnected:hover {
+                margin: 1px;
+                border-width: 3px;
+            }
+            .connected:hover {
+                margin: 1px;
+                border-width:3px;
+            }
+            .connectButton {
+                padding:2em;
+            }
+
+
+		.imgh {
+			width: 32px;
+			height: 32px;
+			position: relative;
+		}
+		
+		#demoContainer{
+				position:relative;
+			}
+		#textArea {
+				position:relative;
+				overflow: hidden;
+		}
+		#textDiv{
+			display: inline-block;
+		}
+		#receiveMessageArea , #pbar{
+			margin-left:30px;
+			margin-bottom: 20px;
+			margin-right: 10px;
+			}
+		#buttonDiv{
+			display: inline-block;
+			/*float: left;*/
+		}
+		#connectControls {
+				display: inline-block;
+				top: 50px;
+				position: relative;
+				text-align:center;
+				
+		}
+		
+		
+		
+		#user_info li{
+			/*#094532*/
+			list-style-type: none;
+			background-color: skyblue;
+			position: relative;
+			border-radius: 5px;
+			padding-left: 10px;
+			padding-right: 10px;
+			padding-top: 14%;
+			padding-bottom: 5px;
+			width: 100%;
+			height: 2%;
+		}
+
+		#conversation {
+                height:300px;
+				width: 50%;
+                border:solid 1px gray;
+                overflow-y:scroll;
+            }
+
+		
+		@media (max-width: 888px){
+			#conversation{
+                height:100px;
+				width: 40%;
+            }
+            #pbar {
+            	margin-right: 40%;
+            }
+		}
+		@media (max-width: 400px) {
+		  #textBlock,#textButton {
+				position: relative;
+		  }
+		}
+</style>
+
+<!--End of easyrtc script-->
+	<script type="text/javascript">
+
+			// $(document).ready(function (){
+			// 	$('#conversation').animate({scrollTop: $('#conversation').attr('scrollHeight')});
+			// // });
+			// window.setInterval(function() {
+			// 	  var elem = document.getElementById('conversation');
+			// 	  elem.scrollTop = elem.scrollHeight;
+			// 	}, 3000);
+
+			// function multiparty() {
+			// 		window.location.href='/room.html';
+			// 	//var p = $("#one2one");
+			// 	//var q = $("#multi");
+			// 	//p.toggle();
+			// 	//q.toggle();
+			// 	//js_toggle("js/demo_multiparty.js");
+			// }
+			// function multiparty1() {
+			// 	window.location.href='/user_details.html';
+			// 	//var p = $("#one2one");
+			// 	//var q = $("#multi");
+			// 	//p.toggle();
+			// 	//q.toggle();
+			// 	//js_toggle("js/demo_multiparty.js");
+			// }
+
+	</script>
+</head>
+
+
+
+
+<body>
+
+
+	<script type="text/javascript">
+		console.log("It's too");
+		var data = {};
+		$.getJSON("/app", function (query_data) {
+				if(query_data)
+					{
+						console.log(query_data);
+						console.log("found it!");
+					}
+				data = query_data;
+				feu(data);
+				console.log(data);
+				console.log('appsss hit');
+		})
+		.error(function() {
+			console.log('error');
+		});
+
+		var feu = function (data) {
+			console.log(data);
+			console.log("User name = "+data.user+", Id is "+data.id);
+			$("#user_info").append("<li><h5>User : " + data.user + "</h5></li>" );
+			$("#user_info").append("<li><h5>ID : " + data.id + "</h5></li>");
+			$("#user_info").append("<li><h5>Mail : " + data.mail + "</h5></li>");
+			$("#user_info").append("<li><h5>Dept : " + data.dept + "</h5></li>");
+		}
+
+		//$("#multiparty").click(
+
+			//if($("multiparty").style.display!="none")
+			//});
+	
+	</script>
+
+
+	<div data-role="page" id="pageone">
+		 <div data-role="panel" id="myPanel" data-display="overlay">
+		    <div class="row">
+		    	<div class="panel-body" id="user_panel">
+					<div class="" id="user_info">
+
+					</div>
+				</div>
+		    </div> 
+		    <div class="row">
+		    	<div id="connectControls">
+					<div id="iam">Not yet connected</div>
+				</div>
+		    </div>
+		 </div> 
+		<!-- <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow">Open Panel $('#selfVideo').toggle(); </a> -->
+		 <div data-role="header">
+		 	<nav class="navbar navbar-default navbar-fixed-top" >
+		      <!-- <img class="btn navbar-btn btn-md" src="images/user_circle.png" onclick="$('#user_info').toggle();"></img> -->
+		      <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow imgh" style="background-image: url('images/user.png');"></a>
+
+				<img class="btn navbar-btn btn-sm" src="images/cog.png" data-toggle="dropdown" id="dlabel">
+					<ul class="dropdown-menu" aria-labelledby="dLabel">
+						<button class="btn navbar-btn btn-info btn-md" id="connectButton" onclick="connect();">Connect</button>
+						<button class="btn navbar-btn btn-info btn-md" onclick="disconnect()">Disconnect</button>
+					</ul>
+				</img>
+				
+	     	</nav>
+		 </div>
+
+		 <div data-role="main" class="ui-content">
+			 	<div class="container ">
+			        <div class="row" style="padding-top:8%;">
+					  	          <div class=".col-xs-18 .col-sm-12 .col-lg-12">
+
+					  	          	<div class="row">
+							  	          	<b>File Transfer Area</b>	
+			  						  		<div id="peerZone">
+	        								</div>
+				  						  	<!-- aria-valuenow="70" -->
+									        <div id="pbar" class="progress">
+											    <div id="pbarmain" class="progress-bar progress-bar-info active" role="progressbar"  aria-valuemin="0" aria-valuenow="0" aria-valuemax="100" style="width:0%">
+											     
+											    </div>
+											</div>
+											<div id="completion">
+											</div>
+					  	          	</div>
+					   
+							      </div>
+					  	          	
+			        </div>
+		    </div>
+		 </div>
+
+	</div> <!-- Panel div ended -->
+
+	
+
+
+
+				<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	<script src="css/ie10-viewport-bug-workaround.js"></script>
+
+
+</body>
+</html>

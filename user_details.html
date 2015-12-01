@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Multiparty Chatroom</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+         <link rel="stylesheet" type="text/css" href="/node_modules/easyrtc/api/easyrtc.css" />
+
+        <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+        <script type="text/javascript" src="/node_modules/easyrtc/api/easyrtc.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+
+        <script src="js/jquery-1.11.3.min.js"></script>
+
+        		<script src="js/jquery.cookie.js"></script>
+        <!-- Latest compiled and minified CSS -->
+          <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
+          <link rel="stylesheet" href="js/bootstrap/css/bootstrap-theme.min.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="js/bootstrap/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="css/demo_room.css" />
+        <script type="text/javascript" src="js/demo_multiparty.js"></script>
+
+        <style type="text/css">
+        #conversation {
+            height:50px;
+            width: 30%;
+            border:solid 1px gray;
+            overflow-y:scroll;
+        }
+        </style>
+        <script type="text/javascript">
+        window.setInterval(function() {
+                  var elem = document.getElementById('conversation');
+                  elem.scrollTop = elem.scrollHeight;
+                }, 3000);
+
+        var user_data;
+        $.getJSON("/app", function (query_data) {
+            user_data = query_data;
+            console.log(user_data);
+            console.log('appsss hit');
+        })
+        .error(function() {
+          console.log('error');
+        });
+        </script>
+
+    </head>
+
+    <body onload="appInit()">
+
+      <nav class="navbar navbar-default navbar-fixed-top" >
+          <div class="container-fluid">
+            <div class=".col-sm-4">
+              <img class="btn navbar-btn btn-md" disabled="disabled"  src="images/user_circle.png" onclick="$('#user_info').toggle();$('#selfVideo').toggle();"></img>
+              <img class="btn navbar-btn btn-sm" disabled="disabled" src="images/cog.png" data-toggle="dropdown" id="dlabel">
+                <ul class="dropdown-menu" aria-labelledby="dLabel">
+                  <button class="btn navbar-btn btn-info btn-md" id="connectButton" onclick="connect();">Connect</button>
+                  <button class="btn navbar-btn btn-info btn-md" onclick="disconnect()">Disconnect</button>
+                  <button class="btn navbar-btn btn-info btn-md" id="hangupButton" disabled="disabled" onclick="hangup()">Hangup</button>
+                </ul>
+              </img>
+            </div>
+
+                        <div class=".col-sm-4" id="receiveMessageArea">
+
+                                    <!-- Received Messages: -->
+                                        <div id="conversation">
+                                        </div>
+
+                        </div>
+
+            <div class=".col-sm-4">
+                          <textarea id="textBlock" class="form-control" rows="1" style="position:relative;width:30%;"></textarea>
+                          <button  id="textButton"  onclick="sendText()" class="btn btn-primary " style="position:relative;">Send</button>
+
+            </div>
+
+          </div>
+        </nav>
+
+
+
+        <div id="fullpage"  class="boxCommon" style="background-image:url(images/irongrip.png)">
+            <video id="box0" class="transit boxCommon thumbCommon easyRTCMirror" muted="muted" volume="0" ></video>
+            <video id="box1" class="transit boxCommon thumbCommon" style="visibility:hidden"></video>
+            <video id="box2" class="transit boxCommon thumbCommon" style="visibility:hidden"></video>
+            <video id="box3" class="transit boxCommon thumbCommon" style="visibility:hidden"></video>
+            <div id="textentryBox" onsubmit="sendText()" style="display:none" >
+                <input type="text" id="textentryField"  class="transit boxcommon" /><br>
+                <button id="textentrySubmit" style="float:right;margin-right:1em" onclick="sendText()">Send</button>
+                <button id="textentryCancel" style="float:left;margin-left:1em" onclick="cancelText()">Cancel</button>
+            </div>
+
+            <img id="killButton" class="transit boxCommon" onclick="killActiveBox()" src="images/button_close.png" style="display:none;z-index:3" alt="close button" />
+            <img id="muteButton" class="transit boxCommon" onclick ="muteActiveBox()" src="images/button_mute.png" style="display:none;z-index:3" alt="mute button" />
+            <img id="textEntryButton" class="transit boxCommon" onclick ="showTextEntry()" src="images/textEntry.png" style="z-index:3;display:none" alt="text button" />
+        </div>
+    </body>
+</html>

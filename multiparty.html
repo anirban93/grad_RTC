@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>App</title>
+	<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="css/ie-emulation-modes-warning.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/jquery.mobile-1.4.5.min.js"></script>
+
+			<script src="js/jquery.cookie.js"></script>
+	<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
+		<!-- <link rel="stylesheet" href="js/bootstrap/css/bootstrap-theme.min.css"> -->
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="js/bootstrap/js/bootstrap.min.js"></script>
+
+
+
+	<!-- jQuery library -->
+	<!-- <script src="js/prettify/jquery.min.js"></script> -->
+
+	<!-- Latest compiled JavaScript -->
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--script type="text/javascript" src="login.js"></script-->
+	<!-- Easyrtc script -->
+	<link rel="stylesheet" type="text/css" href="/node_modules/easyrtc/api/easyrtc.css" />
+
+<!--hide-->
+<link rel="stylesheet" type="text/css" href="css/landing.css" />
+
+<!-- Prettify Code -->
+<script type="text/javascript" src="js/prettify/prettify.js"></script>
+<script type="text/javascript" src="js/prettify/loadAndFilter.js"></script>
+<link rel="stylesheet" type="text/css" href="js/prettify/prettify.css" />
+
+<!--show-->
+<!-- Assumes global locations for socket.io.js and easyrtc.js -->
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/node_modules/easyrtc/api/easyrtc.js"></script>
+<link rel="stylesheet" type="text/css" href="css/demo_room.css" />
+<script type="text/javascript" src="js/demo_multiparty.js"></script>
+<style type="text/css">
+		
+		.imgh {
+			width: 32px;
+			height: 32px;
+			position: relative;
+		}
+		#otherClients {
+				height:relative;
+				width: 100%;
+				overflow-y:scroll;
+		}
+		#user_info {
+
+			width: 100%;
+			margin-top: 20%;
+			border-radius:3px;
+		    border-color: grey;
+		    border-style: solid;
+		    border-width: 1px;
+		   -webkit-box-shadow: 2px 2px 8px 1px rgba(0,0,0,0.9);
+		    box-shadow: 2px 2px 8px 1px rgba(0,0,0,0.9);
+		}
+		#user_info li{
+			/*#094532*/
+			list-style-type: none;
+			background-color: lightgrey;
+			position: relative;
+			padding-left: 10px;
+			padding-right: 10px;
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+
+		#conversation {
+				left: 5px;
+				position: relative;
+				display: inline-block;
+                height:50px;
+				width: 30%;
+                border:solid 1px lightgray;
+                overflow-y:scroll;
+            }
+/*            #sendMsg {
+          	 display: inline-block;
+          	 margin-right: 0px;
+            }*/
+          #textButton{
+          	 position: relative;
+          	 left: 2px;
+          }
+          #textBlock {
+          	right: 20px;
+          	display: inline-block;
+          	width: 20%;
+          }
+
+		@media (max-width: 400px) {
+            #conversation{
+				left: 20px;
+				right: 20px;
+				position: relative;
+				display: inline-block;
+                height:50px;
+				width: 80%;
+            }
+		}
+		@media (max-width: 768px){
+			#conversation{
+				left: 40px;
+				right: 40px;
+				position: relative;
+				display: inline-block;
+                height:100px;
+                width: 80%;
+            }
+			/*
+            #pbar {
+            	margin-right: 40%;
+            }*/
+		}
+		@media (max-width: 400px) {
+		  #textBlock,#textButton {
+				position: relative;
+		  }
+		}
+</style>
+
+<!--End of easyrtc script-->
+	<script type="text/javascript">
+
+			// $(document).ready(function (){
+			// 	$('#conversation').animate({scrollTop: $('#conversation').attr('scrollHeight')});
+			// });
+			window.setInterval(function() {
+				  var elem = document.getElementById('conversation');
+				  elem.scrollTop = elem.scrollHeight;
+				}, 3000);
+
+			function fileConnect() {
+					window.location.href='/new_room.html';
+				
+			}
+
+	</script>
+</head>
+
+
+
+
+<body onload="appInit()">
+
+
+	<script type="text/javascript">
+		console.log("It's too");
+		var data = {};
+		$.getJSON("/app", function (query_data) {
+				if(query_data)
+					{
+						console.log(query_data);
+						console.log("found it!");
+					}
+				data = query_data;
+				feu(data);
+				console.log(data);
+				console.log('appsss hit');
+		})
+		.error(function() {
+			console.log('error');
+		});
+
+		var feu = function (data) {
+			console.log(data);
+			console.log("User name = "+data.user+", Id is "+data.id);
+			$("#user_info").append("<li><h5>User : " + data.user + "</h5></li>" );
+			$("#user_info").append("<li><h5>ID : " + data.id + "</h5></li>");
+			$("#user_info").append("<li><h5>Mail : " + data.mail + "</h5></li>");
+			$("#user_info").append("<li><h5>Dept : " + data.dept + "</h5></li>");
+		}
+
+		//$("#multiparty").click(
+
+			//if($("multiparty").style.display!="none")
+			//});
+		function p2p() {
+				window.location.href='/room.html';
+							}
+	</script>
+
+
+	<div data-role="page" id="pageone">
+		 <div data-role="panel" id="myPanel" data-display="overlay">
+		    <div class="row">
+		    	<div class="panel-body" id="user_panel">
+					<div class="" id="user_info">
+
+					</div>
+				</div>
+		    </div> 
+		    <div class="row">
+		    	<div id="connectControls">
+					<div id="iam">
+						<label class="btn">
+							Not yet connected
+						</label>
+						<button id="multiparty1" class="btn navbar-btn btn-primary btn-md" onclick="p2p();">One2one</button>
+					</div>
+					<label class="btn">
+						<strong>Connected users:</strong>
+					</label>
+					<div id="otherClients"></div>
+				</div>
+				<!-- <button id="multiparty" class="btn navbar-btn btn-primary btn-md" onclick="fileConnect();">File transfer</button> -->
+		      
+		    </div>
+		 </div> 
+		<!-- <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow">Open Panel $('#selfVideo').toggle(); </a> -->
+		 <div data-role="header">
+		 	<nav class="navbar navbar-default navbar-fixed-top" >
+		      <!-- <img class="form-control" class="btn navbar-btn btn-md" src="images/user_circle.png" onclick="$('#user_info').toggle();"></img> -->
+		      <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow imgh" style="background-image: url('images/user.png');"></a>
+		      	
+													
+										<div id="conversation"></div>
+											<button  id="textButton" onclick="sendText();" class="btn btn-default">Send</button>		
+									  	<textarea id="textBlock"  rows="1"></textarea></br>
+	     	</nav>
+		 </div>
+
+		 <div data-role="main" class="ui-content"> 
+
+		 	<!-- background-image:url(images/irongrip.png) -->
+			 	
+			 	<div id="fullpage"  class="boxCommon" style="background-color: #eee;">
+	            <video id="box0" class="transit boxCommon thumbCommon easyRTCMirror" muted="muted" volume="0" ></video>
+	            <video id="box1" class="transit boxCommon thumbCommon" style="visibility:hidden"></video>
+	            <video id="box2" class="transit boxCommon thumbCommon" style="visibility:hidden"></video>
+	            <video id="box3" class="transit boxCommon thumbCommon" style="visibility:hidden"></video>
+	            <div id="textentryBox" onsubmit="sendText()" style="display:none" >
+	                <input type="text" id="textentryField"  class="transit boxcommon" /><br>
+	                <button id="textentrySubmit" style="float:right;margin-right:1em" onclick="sendText()">Send</button>
+	                <button id="textentryCancel" style="float:left;margin-left:1em" onclick="cancelText()">Cancel</button>
+	            </div>
+
+	            <img id="killButton" class="transit boxCommon" onclick="killActiveBox()" src="images/button_close.png" style="display:none;z-index:3" alt="close button" />
+	            <img id="muteButton" class="transit boxCommon" onclick ="muteActiveBox()" src="images/button_mute.png" style="display:none;z-index:3" alt="mute button" />
+	            <img id="textEntryButton" class="transit boxCommon" onclick ="showTextEntry()" src="images/textEntry.png" style="z-index:3;display:none" alt="text button" />
+	       		</div>
+
+
+		 </div>
+
+	</div> <!-- Panel div ended -->
+
+	
+
+
+
+				<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	<script src="css/ie10-viewport-bug-workaround.js"></script>
+
+
+</body>
+</html>

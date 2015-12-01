@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+		<title>Login</title>
+
+		<link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/signin.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="css/ie-emulation-modes-warning.js"></script>
+
+
+	<script type="text/javascript" src="js/prettify/jquery.min.js"></script>
+
+	<script type="text/javascript">
+
+			      $(document).ready(function(){
+							console.log("It's ready");
+			        var user,pass;
+			        $("#new_acc").click(function(){
+			        	window.location.href = '/newac.html';
+			        });
+
+			        $("#login").click(function(){
+
+			        var getdata={};
+					  //user,pass= "";
+			          user=$("#user").val();
+			          pass=$("#pass").val();
+			          $.post("/login_data",{user: user,pw: pass}, function(data){
+			          							if(data)
+												{
+													if(data.user === user)
+													{
+														console.log('hello!');
+														window.location.href = '/room.html';
+													}
+												}
+												else
+													console.log('not found');
+												
+			          },
+			          'json');
+						
+			         console.log('logged in '+user);
+			  //       if(getdata.user===user)
+					// {
+					// 	console.log('hello!');
+					// 	// window.location.href = '/app.html';			//+'/u/'+user;
+					// }
+					// else
+					// 	{
+					// 		console.log(getdata + 'not done');
+			  //     		}
+
+					return false;
+
+			        });
+			      });
+	</script>
+</head>
+<body>
+
+	<!-- <nav class="navbar navbar-default navbar-fixed-top">
+      <img class="btn navbar-btn" src="images/circle_delete.png" onclick="open(location, '_self').close();"></img>
+  </nav> -->
+
+	<div class="container">
+
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Login</h2>
+        <!-- <label for="inputEmail" class="sr-only">Email address</label>
+        <input id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="" type="email"> -->
+				<label for="user" class="sr-only">Email address</label>
+        <input id="user" class="form-control" placeholder="Email address" required="" autofocus="" type="name">
+        <label for="pass" class="sr-only">Password</label>
+        <input id="pass" class="form-control" placeholder="Password" required="" type="password">
+        <!--div class="checkbox">
+          <label>
+            <input value="remember-me" type="checkbox"> Remember me
+          </label>
+        </div-->
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="login">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="new_acc">Create Account</button>
+      </form>
+
+  </div> <!-- /container -->
+		<!--
+	 <div class="row">
+		  <div class="col-sm-4"></div>
+		  <div class="col-sm-4">
+				Username: <input type="TEXT" id="user" size="20"><br>
+    			PASS: <input type="TEXT" id="pass" size="20"><br>
+				<input type="submit" value="Submit" id="submit"/>
+		  </div>
+		  <div class="col-sm-4"></div>
+	</div> -->
+
+	<script src="css/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>
